@@ -34,7 +34,7 @@ public class HonestDictionary {
     mystring = mystring.trim();
     String[] splitted = mystring.split(" ");
 
-    System.out.println(mydictionary);
+    //System.out.println(mydictionary);
     for (int i=0;i<splitted.length; i++){
       splitted[i] = splitted[i].replaceAll("[^a-z]", "");
       
@@ -92,46 +92,50 @@ public class HonestDictionary {
     //System.out.println(mydictionary);
   }
 
+  //these create the numerical data 
   public void WriteDataFromFile(String fileName) {
     // Read each line from the file and invoke MakeDictionary
     // That creates a big dictionary from all the strings 
     // in the file
 
     try {
+      FileWriter myWriter = new FileWriter("honestvalues.csv");
       Scanner myscanner = new Scanner(new File(fileName));
       while (myscanner.hasNextLine()){
         String myline = myscanner.nextLine();
-        WriteData(myline);
+        //System.out.println(myline);
+        WriteData(myWriter, myline);
       }
+      myWriter.close();
+      myscanner.close();
     } catch(IOException e){
       System.out.println("failed to read file");
       e.printStackTrace();
     }
   }
 
-  public void WriteData(String mystring){
+  public void WriteData(FileWriter myWriter, String mystring){
       
     mystring = mystring.toLowerCase();
     mystring = mystring.trim();
-    String[] splitted = mystring.split(" ");
     
+    String[] splitted = mystring.split(" ");
+    for (int i=0;i<splitted.length; i++){
+      splitted[i] = splitted[i].replaceAll("[^a-z]", "");
+    } 
+    
+    int i;
     try{
-      FileWriter myWriter = new FileWriter("honestvalues.csv");
-      for (int i=0; i<splitted.length; i++){
+      for (i=0; i<splitted.length; i++){
         if (mydictionary.contains(splitted[i])){
           myWriter.write((mydictionary.indexOf(splitted[i])+1) + " ");
-          //System.out.println((mydictionary.indexOf(splitted[i])+1) + " ");
         }
       }
-
       myWriter.write("\n");
-      myWriter.close();
-      System.out.println("Successfully wrote to the file.");
     }catch (IOException e) {
       System.out.println("An error occurred.");
       e.printStackTrace();
     }
-    //System.out.println(mydictionary);
   }
 
 }
